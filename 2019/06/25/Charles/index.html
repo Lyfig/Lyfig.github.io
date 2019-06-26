@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/006tNc79ly1g4dgii26wzj30r00eywp1.jpg">
 <meta property="og:image" content="https://liuyan.tech/2019/06/25/Charles/images/breakpoint.jpg">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/006tNc79ly1g4dgq8vf62j30vw0n4jv8.jpg">
-<meta property="og:updated_time" content="2019-06-26T03:53:03.968Z">
+<meta property="og:updated_time" content="2019-06-26T04:02:18.606Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="charles使用说明（基于mac）">
 <meta name="twitter:description" content="Charles简介Charles 需要java的运行环境支持，支持Windows、Mac；Fiddler不支持Mac。故Charles是在Mac下常用的网络封包截取工具。 Charles原理：通过将自己设置成系统的网络访问代理服务器，使得所有的网络访问请求都通过它来完成，从而实现了网络封包的截取和分析。 除了在做移动开发中调试端口外，Charles 也可以用于分析第三方应用的通讯协议。配合 Cha">
@@ -126,7 +126,7 @@
 <p>大家可以根据具体的需要在这两种视图之前来回切换。请求多了有些时候会看不过来，Charles 提供了一个简单的 Filter 功能，可以输入关键字来快速筛选出 URL 中带指定关键字的网络请求。</p>
 <p>对于某一个具体的网络请求，你可以查看其详细的请求内容和响应内容。如果请求内容是 POST 的表单，Charles 会自动帮你将表单进行分项显示。如果响应内容是 JSON 格式的，那么 Charles 可以自动帮你将 JSON 内容格式化，方便你查看。如果响应内容是图片，那么 Charles 可以显示出图片的预览。</p>
 <h2 id="Charles的常用功能"><a href="#Charles的常用功能" class="headerlink" title="Charles的常用功能"></a>Charles的常用功能</h2><h3 id="过滤网络请求"><a href="#过滤网络请求" class="headerlink" title="过滤网络请求"></a>过滤网络请求</h3><p>方法一：在主界面的中部的 Filter 栏中填入需要过滤出来的关键字。例如我们的服务器的地址是：<a href="http://yuantiku.com" target="_blank" rel="noopener">http://yuantiku.com</a> , 那么只需要在 Filter 栏中填入 yuantiku 即可。</p>
-<p>方法二：在 Charles 的菜单栏选择 “Proxy”-&gt;”Recording Settings”，然后选择 Include 栏，选择添加一个项目，然后填入需要监控的协议，主机地址，端口号。这样就可以只截取目标网站的封包了。如下图所示：</p>
+<p>方法二：在 Charles 的菜单栏选择 “Proxy”-&gt;”Recording Settings”，然后选择 Include 栏，选择添加一个项目，然后填入需要监控的协议，主机地址，端口号。这样就可以只截取目标网站的封包了。</p>
 <p>通常情况下，我们使用方法一做临时性的过滤，使用方法二做经常性的过滤。</p>
 <p>方法三：在想过滤的网络请求上右击，选择”Focus”，在filter一栏中勾选Focussed<br>这种方法可以临时的，快速的过滤一类没有关键字的请求</p>
 <h3 id="截取手机上的网络封包（iPhone为例）"><a href="#截取手机上的网络封包（iPhone为例）" class="headerlink" title="截取手机上的网络封包（iPhone为例）"></a>截取手机上的网络封包（iPhone为例）</h3><p> Charles上的设置</p>
