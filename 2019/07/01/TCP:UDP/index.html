@@ -20,7 +20,7 @@
 <meta property="og:description" content="上一篇简单介绍了charles的主要功能。其实charles最大的功能就是抓http&amp;amp;https包，而http&amp;amp;https又是基于TCP的应用层协议。由此延伸，先大概的总结一TCP&amp;amp;UDP，希望能有所帮助~ TCP/IP网络协议通常分不同层次进行开发，每一层分别负责不同的通信功能。一个协议族，比如TCP/IP，是一组不同层次上的多个协议的组合。TCP/IP通常被认为是一个四">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://liuyan.tech/images/tcp.png">
-<meta property="og:updated_time" content="2019-07-01T08:26:26.681Z">
+<meta property="og:updated_time" content="2019-07-01T08:27:25.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TCP&amp;UDP">
 <meta name="twitter:description" content="上一篇简单介绍了charles的主要功能。其实charles最大的功能就是抓http&amp;amp;https包，而http&amp;amp;https又是基于TCP的应用层协议。由此延伸，先大概的总结一TCP&amp;amp;UDP，希望能有所帮助~ TCP/IP网络协议通常分不同层次进行开发，每一层分别负责不同的通信功能。一个协议族，比如TCP/IP，是一组不同层次上的多个协议的组合。TCP/IP通常被认为是一个四">
@@ -126,10 +126,8 @@
 <li>确认号ack：4字节，指的是期望接收到下一个字节的编号；因此当前报文段最后一个字节的编号+1即为确认号。</li>
 <li>确认ACK：1字节，仅当ACK=1时，确认号字段才有效。ACK=0时，确认号无效</li>
 <li>同步SYN接建立时用于同步序号。当SYN=1，ACK=0时表示：这是一个连接请求报文段。若同意连接，则在响应报文段中使得SYN=1，ACK=1。因此，SYN=1表示这是一个连接请求，或连接接受报文。SYN这个标志位只有在TCP建产连接时才会被置1，握手完成后SYN标志位被置0。</li>
-<li><p>终止FIN：用来释放一个连接。FIN=1表示：此报文段的发送方的数据已经发送完毕，并要求释放运输连接</p>
-</li>
-<li><p><strong>注：ACK、SYN和FIN这些大写的单词表示标志位，其值要么是1，要么是0；ack、seq小写的单词表示序号。</strong></p>
-</li>
+<li>终止FIN：用来释放一个连接。FIN=1表示：此报文段的发送方的数据已经发送完毕，并要求释放运输连接</li>
+<li><strong>注：ACK、SYN和FIN这些大写的单词表示标志位，其值要么是1，要么是0；ack、seq小写的单词表示序号。</strong></li>
 </ul>
 </li>
 <li><p>UDP：是一个简单的面向数据报的运输层协议：进程的每个输出操作都正好产生一个UDP数据报，并组装成一份待发送的IP数据报。UDP不提供可靠性，它把应用程序传给IP层的数据发送出去，但是并不保证它们能到达目的地。</p>
@@ -195,6 +193,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev">
+ <a href="/2019/07/04/HTTP-HTTPS/" title="HTTP&amp;HTTPS">
+  <strong>上一篇：</strong><br>
+  <span>
+  HTTP&amp;HTTPS</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2019/06/25/Charles/" title="charles使用说明（基于mac）">
@@ -235,15 +241,15 @@
 		<ul class="clearfix">
 		
 			
+				<li><a href="/tags/网络/" title="网络">网络<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/自我介绍/" title="自我介绍">自我介绍<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/工具类/" title="工具类">工具类<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/网络/" title="网络">网络<sup>1</sup></a></li>
 			
 		
 		</ul>
