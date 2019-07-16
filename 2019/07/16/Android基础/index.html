@@ -1,0 +1,495 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  
+    <title>Android基础 | Ly的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Ly">
+    
+
+    
+    <meta name="description" content="今天看到一个观念，测试的能力大致可以划分为三个能力层次：发现问题、定位问题、预防问题。发现问题各种方式方法，比如边界值等；定位问题要求测试综合能力强，比如业务熟悉、代码熟悉、平台（Liunx系统、Android系统）熟悉等均有很强烈的要求；感觉目前连发现问题的能力都还有所欠缺。。不过个人觉得，对于业务、代码、平台的熟悉度提高，对于发现问题的能力也是有很大提升的，毕竟对于测的业务都不了解，怎么知道">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android基础">
+<meta property="og:url" content="https://liuyan.tech/2019/07/16/Android基础/index.html">
+<meta property="og:site_name" content="Ly的博客">
+<meta property="og:description" content="今天看到一个观念，测试的能力大致可以划分为三个能力层次：发现问题、定位问题、预防问题。发现问题各种方式方法，比如边界值等；定位问题要求测试综合能力强，比如业务熟悉、代码熟悉、平台（Liunx系统、Android系统）熟悉等均有很强烈的要求；感觉目前连发现问题的能力都还有所欠缺。。不过个人觉得，对于业务、代码、平台的熟悉度提高，对于发现问题的能力也是有很大提升的，毕竟对于测的业务都不了解，怎么知道">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://liuyan.tech/images/Android_architecture.jpeg">
+<meta property="og:image" content="https://liuyan.tech/images/state.png">
+<meta property="og:image" content="https://liuyan.tech/images/lifecycle.png">
+<meta property="og:image" content="https://liuyan.tech/images/service.png">
+<meta property="og:updated_time" content="2019-07-16T13:34:56.944Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android基础">
+<meta name="twitter:description" content="今天看到一个观念，测试的能力大致可以划分为三个能力层次：发现问题、定位问题、预防问题。发现问题各种方式方法，比如边界值等；定位问题要求测试综合能力强，比如业务熟悉、代码熟悉、平台（Liunx系统、Android系统）熟悉等均有很强烈的要求；感觉目前连发现问题的能力都还有所欠缺。。不过个人觉得，对于业务、代码、平台的熟悉度提高，对于发现问题的能力也是有很大提升的，毕竟对于测的业务都不了解，怎么知道">
+<meta name="twitter:image" content="https://liuyan.tech/images/Android_architecture.jpeg">
+
+    
+    
+    <link rel="icon" href="/img/favicon.png">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Ly的博客">Ly的博客</a></h1>
+				<h2 class="blog-motto">加油小胖子</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索">
+						<input type="hidden" name="q" value="site:liuyan.tech">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/07/16/Android基础/" title="Android基础" itemprop="url">Android基础</a>
+  </h1>
+  <!--
+  <p class="article-author">By
+       
+    <a href="/about" title="Ly" target="_blank" itemprop="author">Ly</a>
+    
+    -->
+  <p class="article-time">
+    <time datetime="2019-07-16T13:27:48.000Z" itemprop="datePublished"> 发表于 2019-07-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-系统架构"><span class="toc-number">1.</span> <span class="toc-text">Android 系统架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android四大组件"><span class="toc-number">2.</span> <span class="toc-text">Android四大组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity生命周期"><span class="toc-number">3.</span> <span class="toc-text">Activity生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#activity的四个状态"><span class="toc-number">3.1.</span> <span class="toc-text">activity的四个状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#activity生命周期过程"><span class="toc-number">3.2.</span> <span class="toc-text">activity生命周期过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#activity的进程优先级"><span class="toc-number">3.3.</span> <span class="toc-text">activity的进程优先级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service生命周期"><span class="toc-number">4.</span> <span class="toc-text">Service生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">4.1.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>今天看到一个观念，测试的能力大致可以划分为三个能力层次：发现问题、定位问题、预防问题。<br>发现问题各种方式方法，比如边界值等；<br>定位问题要求测试综合能力强，比如业务熟悉、代码熟悉、平台（Liunx系统、Android系统）熟悉等均有很强烈的要求；<br>感觉目前连发现问题的能力都还有所欠缺。。不过个人觉得，对于业务、代码、平台的熟悉度提高，对于发现问题的能力也是有很大提升的，毕竟对于测的业务都不了解，怎么知道覆盖情况呢。</p>
+</blockquote>
+<h2 id="Android-系统架构"><a href="#Android-系统架构" class="headerlink" title="Android 系统架构"></a>Android 系统架构</h2><p><img src="/images/Android_architecture.jpeg" alt><br>由下至上依次是：</p>
+<p><strong>1、Linux内核层</strong><br>Android是基于Liunx内核的，Linux内核提供了安全性、内存管理、进程管理、网络协议和驱动模型等核心系统服务。Linux内核层为各种硬件提供了驱动程序，如显示驱动、相机缺洞、蓝牙驱动、电池管理等等。</p>
+<p><strong>2、硬件抽象层（Hardware Abstraction Layer）</strong><br>Android的硬件抽象层，简单来说，就是对Linux内核驱动程序的封装，向上提供接口，屏蔽底层的实现细节。HAL可定义一个标准接口以供硬件供应商实现，这可让Android忽略较低级别的驱动程序实现。</p>
+<p><strong>3、Android系统运行层</strong><br>这一层包括Android Runtime和原生态的C/C++库。<br>通过C或者C++库为Android系统提供主要的特性支持，例如Surface Manager管理访问显示子系统和从多模块应用中无缝整合2D和3D的图形，WebKit提供了浏览器支持等。可以使用Android DNK直接访问某些原生态库。<br>Android运行时，其中包括了ART虚拟机（Andriod 5.0之前是Dalvik虚拟机，ART模式与Dalvik模式最大的不同在于，在启用ART模式后，系统在安装应用的时候会进行一次预编译，在安装应用程序时会先将代码转换为机器语言存储在本地，这样在运行程序时就不会每次都进行一次编译了，执行效率也大大提升。如果您的应用在ART上运行效果很好，那么它应该也可在Dalvik上运行，但反过来不一定。）每个Java程序都运行在ART虚拟机上，该虚拟机专门针对移动设备进行了定制，每个应用都有自己的Andriod Runtime（ART）实例。此外，Android运行时还包含一套核心运行时库，可提供Java API框架使用的Java编程语言大部分功能，包括一些Java 8语言功能。</p>
+<p><strong>4、Java API框架层</strong><br>这一层主要提供了构建应用程序时可能用到的各种API，开发者通过这一层的API构建自己的APP，这一层也是APP开发人员必须要掌握的内容。</p>
+<p><strong>5、系统应用层</strong><br>所有安装在手机上的系统应用都属于这一层，用户自己开发的应用也属于这一层。</p>
+<h2 id="Android四大组件"><a href="#Android四大组件" class="headerlink" title="Android四大组件"></a>Android四大组件</h2><p><strong>1、activity（界面）</strong>：用来显示Android的程序界面，一个activity通常就是一个单独的屏幕（窗口）。</p>
+<p><strong>2、service（服务）</strong>：没有界面的后台服务，会一直运行在后台。常被用来做数据处理，也可以做一些定时的任务。</p>
+<p><strong>3、content provider（数据交换）</strong>：直译为内容提供者，它是用在不同的应用程序之间共享数据时，可以把一个应用的数据提供给其他的应用使用。</p>
+<p><strong>4、broadcast receiver（广播）</strong>：广播接收器，在广播机制中充当广播的接收者的作用，Android中充满了各种广播，所有需要有选择地接收一些有用的广播，然后处理这些广播。</p>
+<h2 id="Activity生命周期"><a href="#Activity生命周期" class="headerlink" title="Activity生命周期"></a>Activity生命周期</h2><h3 id="activity的四个状态"><a href="#activity的四个状态" class="headerlink" title="activity的四个状态"></a>activity的四个状态</h3><p>running-&gt;paused-&gt;stopped-&gt;killed</p>
+<ol>
+<li>running-&gt;当前显示在屏幕的activity（位于任务栈的顶部），用户可见状态。</li>
+<li>paused-&gt;依旧在用户可见状态，但是界面焦点已经失去，此activity无法与用户进行交互。</li>
+<li>stopped-&gt;用户看不到当前界面，也无法与用户进行交互，完全被覆盖。</li>
+<li>killed-&gt;当前界面被销毁，等待被系统回收。当一个Activity处于暂停状态或者停止状态时就随时可能进入死亡状态，因为系统可能因内存不足而强行结束该activity。<br>关于activity四个状态所在的生命周期：<br><img src="/images/state.png" alt></li>
+</ol>
+<h3 id="activity生命周期过程"><a href="#activity生命周期过程" class="headerlink" title="activity生命周期过程"></a>activity生命周期过程</h3><p>主要有7个方法：onCreate()、onStart()、onResume()、onPause()、onStop()、onRestart()、onDestory()。<br><img src="/images/lifecycle.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">onCreate():当我们点击activity的时候，系统会调用activity的oncreate()方法，在这个方法中我们会初始化当前布局setContentLayout（）方法。 </span><br><span class="line">onStart():onCreate()方法完成后，此时activity进入onStart()方法,当前activity是用户可见状态，但没有焦点，与用户不能交互，一般可在当前方法做一些动画的初始化操作。</span><br><span class="line">onResume(): onStart()方法完成之后，此时activity进入onResume()方法中，当前activity状态属于运行状态 (Running)，可与用户进行交互。 </span><br><span class="line">onPause():当另外一个activity覆盖当前的acitivty时，此时当前activity会进入到onPause()方法中，当前activity是可见的，但不能与用户交互状态。 </span><br><span class="line">onStop():onPause()方法完成之后，此时activity进入onStop()方法，此时activity对用户是不可见的，在系统内存紧张的情况下，有可能会被系统进行回收。所以一般在当前方法可做资源回收。 </span><br><span class="line">onDestory():onStop()方法完成之后，此时activity进入到onDestory()方法中，结束当前activity。 </span><br><span class="line">onRestart():onRestart()方法在用户按下home()之后，再次进入到当前activity的时候调用。调用顺序onPouse()-&gt;onStop()-&gt;onRestart()-&gt;onStart()-&gt;onResume().</span><br></pre></td></tr></table></figure>
+<h3 id="activity的进程优先级"><a href="#activity的进程优先级" class="headerlink" title="activity的进程优先级"></a>activity的进程优先级</h3><p>前台进程&gt;可见进程&gt;service进程&gt;后台进程&gt;空进程</p>
+<p><strong>前台进程</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、当前进程activity正在与用户进行交互。</span><br><span class="line">2、当前进程service正在与activity进行交互或者当前service调用了或者当前service调用了startForground()属于前台进程或者当前service正在执行生命周期（onCreate()、onStrat()、onDestory()）</span><br><span class="line">3、进程持有一个Broadcast Receiver，这个Broadcast Receiver正在执行onReceive()方法</span><br></pre></td></tr></table></figure></p>
+<p><strong>可见进程</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、进程持有一个activity，这个activity不在前台，处于onPause()状态下，当前覆盖的activity是以dialog形式存在的。</span><br><span class="line">2、进程有一个service，这个service和一个可见的activity进行绑定</span><br></pre></td></tr></table></figure></p>
+<p><strong>后台进程</strong>：activity的onStop()被调用，但是onDestory()没有调用的状态。该进程属于后台进程。<br><strong>空进程</strong>：该进程没有任何运行的数据了，且保留在内存空间，并没有被系统killed，属于空进程。该进程很容易被杀死。</p>
+<h2 id="Service生命周期"><a href="#Service生命周期" class="headerlink" title="Service生命周期"></a>Service生命周期</h2><p>Service（服务）是一个一种可以在后台执行长时间运行操作而没有用户界面的应用组件。服务可由其他应用组件启动（如Activity），服务一旦启动将在后台一直运行，即使启动服务的组件（Activity）已销毁也不受影响。<br>Service生命周期，从它被创建开始，到它被销毁为止，可以有两条不同的路径：<br><img src="/images/service.png" alt></p>
+<p>通常分为两种服务：</p>
+<ul>
+<li><strong>本地服务</strong>，Local Service用于应用程序内部。在Service可以调用Context.startService()启动，调用Context.stopService()结束。 在内部可以调用Service.stopSelf() 或 Service.stopSelfResult()来自己停止。无论调用了多少次startService()，都只需调用一次 stopService()来停止。</li>
+<li><strong>远程服务</strong>，Remote Service 用于android系统内部的应用程序之间。可以定义接口并把接口暴露出来，以便其他应用进行操作。客户端建立到服务对象的连接，并通过那个连接来调用服 务。调用Context.bindService()方法建立连接，并启动，以调用 Context.unbindService()关闭连接。多个客户端可以绑定至同一个服务。如果服务此时还没有加载，bindService()会先加载它。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>如果service是被开启的，那么它的活动生命周期和整个生命周期一同结束。</li>
+<li>如果service是被绑定的，它们它的活动生命周期是在onUnbind()方法返回后结束。</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/android/">android</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://liuyan.tech/2019/07/16/Android基础/" data-title="Android基础 | Ly的博客" data-tsina class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/07/04/HTTP-HTTPS/" title="HTTP&amp;HTTPS">
+ <strong>下一篇：</strong><br> 
+ <span>HTTP&amp;HTTPS
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-系统架构"><span class="toc-number">1.</span> <span class="toc-text">Android 系统架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android四大组件"><span class="toc-number">2.</span> <span class="toc-text">Android四大组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activity生命周期"><span class="toc-number">3.</span> <span class="toc-text">Activity生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#activity的四个状态"><span class="toc-number">3.1.</span> <span class="toc-text">activity的四个状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#activity生命周期过程"><span class="toc-number">3.2.</span> <span class="toc-text">activity生命周期过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#activity的进程优先级"><span class="toc-number">3.3.</span> <span class="toc-text">activity的进程优先级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service生命周期"><span class="toc-number">4.</span> <span class="toc-text">Service生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">4.1.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/网络/" title="网络">网络<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/自我介绍/" title="自我介绍">自我介绍<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工具类/" title="工具类">工具类<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://wukaikai.tech" target="_blank" title="凯爷">凯爷</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	
+	<div class="social-font">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Ly">Ly</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
