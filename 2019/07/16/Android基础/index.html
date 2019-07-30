@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://liuyan.tech/images/state.png">
 <meta property="og:image" content="https://liuyan.tech/images/lifecycle.png">
 <meta property="og:image" content="https://liuyan.tech/images/service.png">
-<meta property="og:updated_time" content="2019-07-16T13:34:56.944Z">
+<meta property="og:updated_time" content="2019-07-16T13:35:41.033Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android基础">
 <meta name="twitter:description" content="今天看到一个观念，测试的能力大致可以划分为三个能力层次：发现问题、定位问题、预防问题。发现问题各种方式方法，比如边界值等；定位问题要求测试综合能力强，比如业务熟悉、代码熟悉、平台（Liunx系统、Android系统）熟悉等均有很强烈的要求；感觉目前连发现问题的能力都还有所欠缺。。不过个人觉得，对于业务、代码、平台的熟悉度提高，对于发现问题的能力也是有很大提升的，毕竟对于测的业务都不了解，怎么知道">
@@ -126,8 +126,8 @@
 <h3 id="activity生命周期过程"><a href="#activity生命周期过程" class="headerlink" title="activity生命周期过程"></a>activity生命周期过程</h3><p>主要有7个方法：onCreate()、onStart()、onResume()、onPause()、onStop()、onRestart()、onDestory()。<br><img src="/images/lifecycle.png" alt></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">onCreate():当我们点击activity的时候，系统会调用activity的oncreate()方法，在这个方法中我们会初始化当前布局setContentLayout（）方法。 </span><br><span class="line">onStart():onCreate()方法完成后，此时activity进入onStart()方法,当前activity是用户可见状态，但没有焦点，与用户不能交互，一般可在当前方法做一些动画的初始化操作。</span><br><span class="line">onResume(): onStart()方法完成之后，此时activity进入onResume()方法中，当前activity状态属于运行状态 (Running)，可与用户进行交互。 </span><br><span class="line">onPause():当另外一个activity覆盖当前的acitivty时，此时当前activity会进入到onPause()方法中，当前activity是可见的，但不能与用户交互状态。 </span><br><span class="line">onStop():onPause()方法完成之后，此时activity进入onStop()方法，此时activity对用户是不可见的，在系统内存紧张的情况下，有可能会被系统进行回收。所以一般在当前方法可做资源回收。 </span><br><span class="line">onDestory():onStop()方法完成之后，此时activity进入到onDestory()方法中，结束当前activity。 </span><br><span class="line">onRestart():onRestart()方法在用户按下home()之后，再次进入到当前activity的时候调用。调用顺序onPouse()-&gt;onStop()-&gt;onRestart()-&gt;onStart()-&gt;onResume().</span><br></pre></td></tr></table></figure>
 <h3 id="activity的进程优先级"><a href="#activity的进程优先级" class="headerlink" title="activity的进程优先级"></a>activity的进程优先级</h3><p>前台进程&gt;可见进程&gt;service进程&gt;后台进程&gt;空进程</p>
-<p><strong>前台进程</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、当前进程activity正在与用户进行交互。</span><br><span class="line">2、当前进程service正在与activity进行交互或者当前service调用了或者当前service调用了startForground()属于前台进程或者当前service正在执行生命周期（onCreate()、onStrat()、onDestory()）</span><br><span class="line">3、进程持有一个Broadcast Receiver，这个Broadcast Receiver正在执行onReceive()方法</span><br></pre></td></tr></table></figure></p>
-<p><strong>可见进程</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、进程持有一个activity，这个activity不在前台，处于onPause()状态下，当前覆盖的activity是以dialog形式存在的。</span><br><span class="line">2、进程有一个service，这个service和一个可见的activity进行绑定</span><br></pre></td></tr></table></figure></p>
+<p><strong>前台进程</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">进程activity正在与用户进行交互。</span><br><span class="line">当前进程service正在与activity进行交互或者当前service调用了或者当前service调用了startForground()属于前台进程或者当前service正在执行生命周期（onCreate()、onStrat()、onDestory()）</span><br><span class="line">进程持有一个Broadcast Receiver，这个Broadcast Receiver正在执行onReceive()方法</span><br></pre></td></tr></table></figure></p>
+<p><strong>可见进程</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">进程持有一个activity，这个activity不在前台，处于onPause()状态下，当前覆盖的activity是以dialog形式存在的。</span><br><span class="line">进程有一个service，这个service和一个可见的activity进行绑定</span><br></pre></td></tr></table></figure></p>
 <p><strong>后台进程</strong>：activity的onStop()被调用，但是onDestory()没有调用的状态。该进程属于后台进程。<br><strong>空进程</strong>：该进程没有任何运行的数据了，且保留在内存空间，并没有被系统killed，属于空进程。该进程很容易被杀死。</p>
 <h2 id="Service生命周期"><a href="#Service生命周期" class="headerlink" title="Service生命周期"></a>Service生命周期</h2><p>Service（服务）是一个一种可以在后台执行长时间运行操作而没有用户界面的应用组件。服务可由其他应用组件启动（如Activity），服务一旦启动将在后台一直运行，即使启动服务的组件（Activity）已销毁也不受影响。<br>Service生命周期，从它被创建开始，到它被销毁为止，可以有两条不同的路径：<br><img src="/images/service.png" alt></p>
 <p>通常分为两种服务：</p>
@@ -169,6 +169,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev">
+ <a href="/2019/07/30/adb/" title="adb">
+  <strong>上一篇：</strong><br>
+  <span>
+  adb</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2019/07/04/HTTP-HTTPS/" title="HTTP&amp;HTTPS">
@@ -209,15 +217,15 @@
 		<ul class="clearfix">
 		
 			
+				<li><a href="/tags/android/" title="android">android<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/网络/" title="网络">网络<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/自我介绍/" title="自我介绍">自我介绍<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			

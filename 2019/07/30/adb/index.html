@@ -1,0 +1,714 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  
+    <title>adb | Ly的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Ly">
+    
+
+    
+    <meta name="description" content="ABD是什么adb（全称Android Debug Bridge）：Android调试桥梁。用来协助相关人员更快更好的调试apk，adb具有安装卸载apk、拷贝推送文件、查看设备硬件信息、查看应用程序占用资源、在设备执行shell命令等功能。 ADB架构ABD是一个C/S架构的应用程序，由三部分组成：  运行在pc端的adb client：命令行程序”adb”用于从shell或脚本中运行adb命令">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="adb">
+<meta property="og:url" content="https://liuyan.tech/2019/07/30/adb/index.html">
+<meta property="og:site_name" content="Ly的博客">
+<meta property="og:description" content="ABD是什么adb（全称Android Debug Bridge）：Android调试桥梁。用来协助相关人员更快更好的调试apk，adb具有安装卸载apk、拷贝推送文件、查看设备硬件信息、查看应用程序占用资源、在设备执行shell命令等功能。 ADB架构ABD是一个C/S架构的应用程序，由三部分组成：  运行在pc端的adb client：命令行程序”adb”用于从shell或脚本中运行adb命令">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://liuyan.tech/images/adb_framework.png">
+<meta property="og:updated_time" content="2019-07-30T07:25:46.851Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="adb">
+<meta name="twitter:description" content="ABD是什么adb（全称Android Debug Bridge）：Android调试桥梁。用来协助相关人员更快更好的调试apk，adb具有安装卸载apk、拷贝推送文件、查看设备硬件信息、查看应用程序占用资源、在设备执行shell命令等功能。 ADB架构ABD是一个C/S架构的应用程序，由三部分组成：  运行在pc端的adb client：命令行程序”adb”用于从shell或脚本中运行adb命令">
+<meta name="twitter:image" content="https://liuyan.tech/images/adb_framework.png">
+
+    
+    
+    <link rel="icon" href="/img/favicon.png">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Ly的博客">Ly的博客</a></h1>
+				<h2 class="blog-motto">加油小胖子</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索">
+						<input type="hidden" name="q" value="site:liuyan.tech">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/07/30/adb/" title="adb" itemprop="url">adb</a>
+  </h1>
+  <!--
+  <p class="article-author">By
+       
+    <a href="/about" title="Ly" target="_blank" itemprop="author">Ly</a>
+    
+    -->
+  <p class="article-time">
+    <time datetime="2019-07-30T07:22:54.000Z" itemprop="datePublished"> 发表于 2019-07-30</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ABD是什么"><span class="toc-number">1.</span> <span class="toc-text">ABD是什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ADB架构"><span class="toc-number">1.1.</span> <span class="toc-text">ADB架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ADB基本用法"><span class="toc-number">2.</span> <span class="toc-text">ADB基本用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单一设备-模拟器连接"><span class="toc-number">2.1.</span> <span class="toc-text">单一设备/模拟器连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多个设备-模拟器连接"><span class="toc-number">2.2.</span> <span class="toc-text">多个设备/模拟器连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#adb-shell"><span class="toc-number">2.3.</span> <span class="toc-text">adb shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#adb常用命令"><span class="toc-number">2.4.</span> <span class="toc-text">adb常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Activity-Manager"><span class="toc-number">2.4.1.</span> <span class="toc-text">Activity Manager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dump"><span class="toc-number">2.4.2.</span> <span class="toc-text">dump</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Package-Manager"><span class="toc-number">2.4.3.</span> <span class="toc-text">Package Manager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#File-Manager"><span class="toc-number">2.4.4.</span> <span class="toc-text">File Manager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Logcat"><span class="toc-number">2.4.5.</span> <span class="toc-text">Logcat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Screenshot"><span class="toc-number">2.4.6.</span> <span class="toc-text">Screenshot</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设备管理连接"><span class="toc-number">2.5.</span> <span class="toc-text">设备管理连接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#USB-连接"><span class="toc-number">2.5.1.</span> <span class="toc-text">USB 连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WLAN-连接（需要-USB-线）"><span class="toc-number">2.5.2.</span> <span class="toc-text">WLAN 连接（需要 USB 线）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WLAN-连接（无需借助-USB-线）"><span class="toc-number">2.5.3.</span> <span class="toc-text">WLAN 连接（无需借助 USB 线）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WiFi-连接转为-USB-连接"><span class="toc-number">2.5.4.</span> <span class="toc-text">WiFi 连接转为 USB 连接</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="ABD是什么"><a href="#ABD是什么" class="headerlink" title="ABD是什么"></a>ABD是什么</h2><p>adb（全称Android Debug Bridge）：Android调试桥梁。用来协助相关人员更快更好的调试apk，adb具有安装卸载apk、拷贝推送文件、查看设备硬件信息、查看应用程序占用资源、在设备执行shell命令等功能。</p>
+<h3 id="ADB架构"><a href="#ADB架构" class="headerlink" title="ADB架构"></a>ADB架构</h3><p>ABD是一个C/S架构的应用程序，由三部分组成：</p>
+<ol>
+<li>运行在pc端的adb client：<br><br>命令行程序”adb”用于从shell或脚本中运行adb命令。首先，”adb”程序尝试定位主机上的ADB服务器，如果找不到adb服务器，”adb”程序自动启动一个ADB服务器。接下来，当设备的adbd和pc端的ADB server建立连接后，adb client就可以向ADB server发送服务请求；</li>
+<li>运行在pc端的abd server：<br><br>ADB Server是运行在主机上的一个后台进程。它的作用在于检测USB端口感知设备的连接和拔除，以及模拟器实例的启动或停止，ADB Server还需要将adb client的请求通过usb或者tcp的方式发送到对应的adbd上；</li>
+<li>运行在设备端的常驻进程adb demon（adbd）:<br><br>程序”abdb”作为一个后台进程在Android设备或者模拟器系统中运行。它的作用是连接ADB服务器，并且为运行在主机上的客户端提供一些服务；<br><img src="/images/adb_framework.png" alt></li>
+</ol>
+<h2 id="ADB基本用法"><a href="#ADB基本用法" class="headerlink" title="ADB基本用法"></a>ADB基本用法</h2><p>adb能做什么？<br>答案是所有能对手机的操作都能用adb实现。</p>
+<p>adb命令的基本语法如下：<br>adb [-d|-e|-s <serial-number>] <command></serial-number></p>
+<h3 id="单一设备-模拟器连接"><a href="#单一设备-模拟器连接" class="headerlink" title="单一设备/模拟器连接"></a>单一设备/模拟器连接</h3><p>如果只有一个设备/模拟器连接时，可以省略掉[-d|-e|-s <serial-number>] 这一部分，直接使用adb <command></serial-number></p>
+<h3 id="多个设备-模拟器连接"><a href="#多个设备-模拟器连接" class="headerlink" title="多个设备/模拟器连接"></a>多个设备/模拟器连接</h3><p>如果有多个设备/模拟器连接，则需要为命令指定目标设备，下表是指定目标设备的命令选项：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-d</td>
+<td>指定当前唯一通过USB连接的Android设备为命令目标</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>指定当前唯一运行的模拟器为命令目标</td>
+</tr>
+<tr>
+<td>-s</td>
+<td><serial-number>指定相应设备序列号的设备/模拟器为命令目标</serial-number></td>
+</tr>
+</tbody>
+</table>
+<h3 id="adb-shell"><a href="#adb-shell" class="headerlink" title="adb shell"></a>adb shell</h3><p>Android的内核本身就是Linux，所有Android本身也支持Linux命令。<br>在手机中执行Shell命令，每次都加上adb shell来进行命令的发送和执行。</p>
+<h3 id="adb常用命令"><a href="#adb常用命令" class="headerlink" title="adb常用命令"></a>adb常用命令</h3><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查看adb的版本信息</td>
+<td>adb version</td>
+</tr>
+<tr>
+<td>启动adb服务</td>
+<td>adb start-server</td>
+</tr>
+<tr>
+<td>停止adb服务</td>
+<td>adb kill-server</td>
+</tr>
+<tr>
+<td>查询已连接的设备/模拟器列表</td>
+<td>adb devices</td>
+</tr>
+<tr>
+<td>指定adb server的网络端口</td>
+<td>adb -P <port> start-server，adb的默认端口为：5037</port></td>
+</tr>
+<tr>
+<td>以root权限运行adbd</td>
+<td>adb root</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Activity-Manager"><a href="#Activity-Manager" class="headerlink" title="Activity Manager"></a>Activity Manager</h4><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>获得应用的启动时间</td>
+<td>adb shell am start -W&lt;package_name&gt;/.&lt;activity_class_name&gt; </td>
+</tr>
+<tr>
+<td>启动activity</td>
+<td>adb shell am start -n&lt;package_name&gt;/.&lt;activity_class_name&gt;  </td>
+</tr>
+<tr>
+<td>杀掉APP</td>
+<td>adb shell am force-stop &lt;package_name&gt;  </td>
+</tr>
+</tbody>
+</table>
+<h4 id="dump"><a href="#dump" class="headerlink" title="dump"></a>dump</h4><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查看版本号</td>
+<td>adb shell dumpsys package com.youxiang.soyoungapp</td>
+<td>findstr versionName    </td>
+</tr>
+<tr>
+<td>获取系统数据</td>
+<td>adb shell dumpsys    </td>
+</tr>
+</tbody>
+</table>
+<p>adb shell dumpsys [options]<br>adb shell dumpsys activity activities<br>adb shell dumpsys activity|findstr mResumedActivity</p>
+<h4 id="Package-Manager"><a href="#Package-Manager" class="headerlink" title="Package Manager"></a>Package Manager</h4><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>安装应用</td>
+<td>adb install                   </td>
+</tr>
+<tr>
+<td>直接安装应用</td>
+<td>adb  install test.apk  </td>
+</tr>
+<tr>
+<td>覆盖安装</td>
+<td>adb install -r test.apk  </td>
+</tr>
+<tr>
+<td>卸载应用</td>
+<td>adb uninstall             </td>
+</tr>
+<tr>
+<td>直接卸载</td>
+<td>adb uninstall test.apk </td>
+</tr>
+<tr>
+<td>保留数据卸载</td>
+<td>adb  uninstall -k test.apk </td>
+</tr>
+<tr>
+<td>打印apk路径</td>
+<td>adb shell pm path <package>  </package></td>
+</tr>
+<tr>
+<td>清除应用缓存</td>
+<td>adb shll pm clear <package>    </package></td>
+</tr>
+</tbody>
+</table>
+<h4 id="File-Manager"><a href="#File-Manager" class="headerlink" title="File Manager"></a>File Manager</h4><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>从Android设备下载文件到pc</td>
+<td>adb pull <remote>[local]    adb pull /sdcard/test.png c:\user</remote></td>
+</tr>
+<tr>
+<td>把pc文件放到Android设备</td>
+<td>adb push <local> <remote></remote></local></td>
+</tr>
+<tr>
+<td>列出目录内容</td>
+<td>adb shell ls [option]<directory></directory></td>
+</tr>
+<tr>
+<td>进入文件夹</td>
+<td>adb shell cd </td>
+</tr>
+<tr>
+<td>删除文件或目录</td>
+<td>adb shell rm [options] <file or directory></file></td>
+</tr>
+<tr>
+<td>创建文件夹</td>
+<td>adb shell mkdir[options] <file or directory></file></td>
+</tr>
+<tr>
+<td>复制文件</td>
+<td>adb shell cp [options] <source><dest></dest></td>
+</tr>
+<tr>
+<td>移动或者更名文件</td>
+<td>adb shell mv [options] <source> <dest></dest></td>
+</tr>
+</tbody>
+</table>
+<h4 id="Logcat"><a href="#Logcat" class="headerlink" title="Logcat"></a>Logcat</h4><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>打印日志文件</td>
+<td>adb logcat [options] [filter-specs]</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h4><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>截图保存为test.png</td>
+<td>adb shell screencap /sdcard/test.png    </td>
+</tr>
+<tr>
+<td>录屏保存为test.mp4</td>
+<td>adb shell screencord /sdcard/test.mp4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="设备管理连接"><a href="#设备管理连接" class="headerlink" title="设备管理连接"></a>设备管理连接</h3><h4 id="USB-连接"><a href="#USB-连接" class="headerlink" title="USB 连接"></a>USB 连接</h4><p>通过 USB 连接来正常使用 adb 需要以下步骤：</p>
+<ol>
+<li>确认硬件状态正常(包括 Android 设备处于正常开机状态，USB 连接线和各种接口完好)。</li>
+<li>Android 设备的开发者选项和 USB 调试模式已开启(可以在「设置」-「开发者选项」-「USB调试」打开USB调试)。</li>
+<li>确认设备驱动状态正常(安装ADB驱动程序)。</li>
+<li>通过 USB 线连接好电脑和设备后确认状态。</li>
+<li>通过 adb devices 命令查看设备连接情况。</li>
+</ol>
+<h4 id="WLAN-连接（需要-USB-线）"><a href="#WLAN-连接（需要-USB-线）" class="headerlink" title="WLAN 连接（需要 USB 线）"></a>WLAN 连接（需要 USB 线）</h4><p>借助 USB 通过 WiFi 连接来正常使用 adb 需要以下步骤：<br>操作步骤：</p>
+<ol>
+<li>将 Android 设备与要运行 adb 的电脑连接到同一个 WiFi。</li>
+<li>将设备与电脑通过 USB 线连接(可通过 adb devices 命令查看设备连接情况)。</li>
+<li>通过 adb tcpip 5555 命令让设备在 5555 端口监听 TCP/IP 连接。</li>
+<li>断开 USB 连接。</li>
+<li>找到设备的 IP 地址(可以在「设置」-「关于手机」-「状态信息」-「IP地址」查看 IP 地址)。</li>
+<li>通过 adb connect <device-ip-address> 命令使用 IP 地址将 Android 设备与电脑连接。</device-ip-address></li>
+<li>通过 adb devices 命令查看设备连接情况。</li>
+<li>使用完毕后可通过 adb disconnect <device-ip-address> 命令断开无线连接。</device-ip-address></li>
+</ol>
+<h4 id="WLAN-连接（无需借助-USB-线）"><a href="#WLAN-连接（无需借助-USB-线）" class="headerlink" title="WLAN 连接（无需借助 USB 线）"></a>WLAN 连接（无需借助 USB 线）</h4><p>注：需要 root 权限。不借助 USB 通过 WiFi 连接来正常使用 adb 需要以下步骤：</p>
+<ol>
+<li>在 Android 设备上安装一个终端模拟器(可通过Terminal Emulator for Android Downloads下载)。</li>
+<li>将 Android 设备与要运行 adb 的电脑连接到同一个 WiFi。</li>
+<li><p>打开 Android 设备上的终端模拟器，在里面依次运行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su</span><br><span class="line">setprop service.adb.tcp.port 5555</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找到设备的 IP 地址(可以在「设置」-「关于手机」-「状态信息」-「IP地址」查看 IP 地址)。</p>
+</li>
+<li>通过 adb connect <device-ip-address> 命令使用 IP 地址将 Android 设备与电脑连接。</device-ip-address></li>
+<li>通过 adb devices 命令查看设备连接情况。</li>
+</ol>
+<h4 id="WiFi-连接转为-USB-连接"><a href="#WiFi-连接转为-USB-连接" class="headerlink" title="WiFi 连接转为 USB 连接"></a>WiFi 连接转为 USB 连接</h4><p>通过adb usb命令以USB模式重新启动ADB：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb usb</span><br></pre></td></tr></table></figure></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/android/">android</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://liuyan.tech/2019/07/30/adb/" data-title="adb | Ly的博客" data-tsina class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/07/16/Android基础/" title="Android基础">
+ <strong>下一篇：</strong><br> 
+ <span>Android基础
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ABD是什么"><span class="toc-number">1.</span> <span class="toc-text">ABD是什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ADB架构"><span class="toc-number">1.1.</span> <span class="toc-text">ADB架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ADB基本用法"><span class="toc-number">2.</span> <span class="toc-text">ADB基本用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单一设备-模拟器连接"><span class="toc-number">2.1.</span> <span class="toc-text">单一设备/模拟器连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多个设备-模拟器连接"><span class="toc-number">2.2.</span> <span class="toc-text">多个设备/模拟器连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#adb-shell"><span class="toc-number">2.3.</span> <span class="toc-text">adb shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#adb常用命令"><span class="toc-number">2.4.</span> <span class="toc-text">adb常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Activity-Manager"><span class="toc-number">2.4.1.</span> <span class="toc-text">Activity Manager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dump"><span class="toc-number">2.4.2.</span> <span class="toc-text">dump</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Package-Manager"><span class="toc-number">2.4.3.</span> <span class="toc-text">Package Manager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#File-Manager"><span class="toc-number">2.4.4.</span> <span class="toc-text">File Manager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Logcat"><span class="toc-number">2.4.5.</span> <span class="toc-text">Logcat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Screenshot"><span class="toc-number">2.4.6.</span> <span class="toc-text">Screenshot</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设备管理连接"><span class="toc-number">2.5.</span> <span class="toc-text">设备管理连接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#USB-连接"><span class="toc-number">2.5.1.</span> <span class="toc-text">USB 连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WLAN-连接（需要-USB-线）"><span class="toc-number">2.5.2.</span> <span class="toc-text">WLAN 连接（需要 USB 线）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WLAN-连接（无需借助-USB-线）"><span class="toc-number">2.5.3.</span> <span class="toc-text">WLAN 连接（无需借助 USB 线）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WiFi-连接转为-USB-连接"><span class="toc-number">2.5.4.</span> <span class="toc-text">WiFi 连接转为 USB 连接</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络/" title="网络">网络<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/自我介绍/" title="自我介绍">自我介绍<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工具类/" title="工具类">工具类<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://wukaikai.tech" target="_blank" title="凯爷">凯爷</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	
+	<div class="social-font">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Ly">Ly</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
