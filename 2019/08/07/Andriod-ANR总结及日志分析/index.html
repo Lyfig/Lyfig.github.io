@@ -1,0 +1,475 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  
+    <title>Andriod-ANR总结及日志分析 | Ly的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Ly">
+    
+
+    
+    <meta name="description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在==5s==内没有">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Andriod-ANR总结及日志分析">
+<meta property="og:url" content="https://liuyan.tech/2019/08/07/Andriod-ANR总结及日志分析/index.html">
+<meta property="og:site_name" content="Ly的博客">
+<meta property="og:description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在==5s==内没有">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-07T07:48:35.212Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Andriod-ANR总结及日志分析">
+<meta name="twitter:description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在==5s==内没有">
+
+    
+    
+    <link rel="icon" href="/img/favicon.png">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Ly的博客">Ly的博客</a></h1>
+				<h2 class="blog-motto">加油小胖子</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索">
+						<input type="hidden" name="q" value="site:liuyan.tech">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/08/07/Andriod-ANR总结及日志分析/" title="Andriod-ANR总结及日志分析" itemprop="url">Andriod-ANR总结及日志分析</a>
+  </h1>
+  <!--
+  <p class="article-author">By
+       
+    <a href="/about" title="Ly" target="_blank" itemprop="author">Ly</a>
+    
+    -->
+  <p class="article-time">
+    <time datetime="2019-08-07T07:47:53.000Z" itemprop="datePublished"> 发表于 2019-08-07</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ANR简述"><span class="toc-number">1.</span> <span class="toc-text">ANR简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ANR产生原因"><span class="toc-number">2.</span> <span class="toc-text">ANR产生原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#典型的ANR场景"><span class="toc-number">3.</span> <span class="toc-text">典型的ANR场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ANR日志分析"><span class="toc-number">4.</span> <span class="toc-text">ANR日志分析</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="ANR简述"><a href="#ANR简述" class="headerlink" title="ANR简述"></a>ANR简述</h2><p>ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。</p>
+<h2 id="ANR产生原因"><a href="#ANR产生原因" class="headerlink" title="ANR产生原因"></a>ANR产生原因</h2><p>出现ANR一般有以下几种原因：</p>
+<ol>
+<li><strong>KeyDispatchTimeout</strong>(常见)<br>input事件在==5s==内没有处理完成<br>logcat日志关键字：==Input event dispatching timed out==</li>
+<li><strong>BroadcastTimeout</strong><br>前台Broadcast：onReceiver在==10S==内没有处理完成发生ANR。<br>后台Broadcast：onReceiver在==60s==内没有处理完成发生ANR。<br>logcat日志关键字：==Timeout of broadcast BroadcastRecord==</li>
+<li><strong>ServiceTimeout</strong><br>前台Service：onCreate，onStart，onBind等生命周期在==20s==内没有处理完成发生ANR。<br>后台Service：onCreate，onStart，onBind等生命周期在==200s==内没有处理完成发生ANR<br>logcat日志关键字：==Timeout executing service==</li>
+<li><strong>ContentProviderTimeout</strong><br>ContentProvider 在==10S==内没有处理完成发生ANR。<br>logcat日志关键字：==timeout publishing content providers==</li>
+</ol>
+<h2 id="典型的ANR场景"><a href="#典型的ANR场景" class="headerlink" title="典型的ANR场景"></a>典型的ANR场景</h2><p>1)主线程频繁进行IO操作，比如读写文件或者数据库；<br>2)硬件操作如进行调用照相机或者录音等操作；<br>3)多线程操作的死锁，导致主线程等待超时；<br>4)主线程操作调用join()方法、sleep()方法或者wait()方法；<br>5)耗时动画/耗资源行为导致CPU负载过重<br>6)system server中发生WatchDog ANR；<br>7)service binder的数量达到上限</p>
+<h2 id="ANR日志分析"><a href="#ANR日志分析" class="headerlink" title="ANR日志分析"></a>ANR日志分析</h2><p>ANR的Log信息保存在：/data/anr/traces.txt，每一次新的ANR发生，会把之前的ANR信息覆盖掉</p>
+<p>获取trace文件：<strong>adb pull /data/anr/traces.txt</strong></p>
+<p>获取日志有一点需要注意，发生ANR后，不要选择结束进程，因为这样AMS会kill掉该进程，有些信息会打印不出来（比如MTK平台上会生成db.XX.ANR，写入到aee_exp文件夹下需要时间），最好是ANR发生后等两三分钟左右，再获取日志。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">04-01 13:12:11.572 I/InputDispatcher( 220): Application is not responding:Window&#123;2b263310com.android.email/com.android.email.activity.SplitScreenActivitypaused=false&#125;.</span><br><span class="line">5009.8ms since event, 5009.5ms since waitstarted</span><br><span class="line">04-0113:12:11.572 I/WindowManager( 220): Input event </span><br><span class="line">dispatching timedout sending </span><br><span class="line">tocom.android.email/com.android.email.activity.SplitScreenActivity</span><br><span class="line"></span><br><span class="line">04-01 13:12:14.123 I/Process( 220): Sending signal. PID: 21404 SIG:3---发生ANR的时间和生成trace.txt的时间</span><br><span class="line">04-01 13:12:14.123 I/dalvikvm(21404):threadid=4: reacting to signal 3 ……</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): ANR in com.android.email(com.android.email/.activity.SplitScreenActivity)</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): Reason:keyDispatchingTimedOut  -----ANR的类型</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): Load: 8.68 / 8.37 / 8.53 --CPU的负载情况</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): CPUusage from 4361ms to 699ms ago ----CPU在ANR发生前的使用情况；备注：这个ago，是发生前一段时间的使用情况，不是当前时间点的使用情况；</span><br><span class="line"></span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 5.5%21404/com.android.email: 1.3% user + 4.1% kernel / faults:</span><br><span class="line">10 minor</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 4.3%220/system_server: 2.7% user + 1.5% kernel / faults: 11</span><br><span class="line">minor 2 major</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 0.9%52/spi_qsd.0: 0% user + 0.9% kernel</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 0.5%65/irq/170-cyttsp-: 0% user + 0.5% kernel</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 0.5%296/com.android.systemui: 0.5% user + 0% kernel</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 100%TOTAL: 4.8% user + 7.6% kernel + 87% iowait----注意这行：注意87%的iowait</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): CPUusage from 3697ms to 4223ms later:-- ANR后CPU的使用量</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 25%21404/com.android.email: 25% user + 0% kernel / faults: 191 minor</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 16% 21603/__eas(par.hakan: 16% user + 0% kernel</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 7.2% 21406/GC: 7.2% user + 0% kernel</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 1.8% 21409/Compiler: 1.8% user + 0% kernel</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 5.5%220/system_server: 0% user + 5.5% kernel / faults: 1 minor</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 5.5% 263/InputDispatcher: 0% user + 5.5% kernel</span><br><span class="line">04-0113:12:15.872 E/ActivityManager( 220): 32%TOTAL: 28% user + 3.7% kernel</span><br></pre></td></tr></table></figure>
+<p>从Logcat中可以得到以下信息：</p>
+<ol>
+<li>导致ANR的包名（com.android.emai），类名（com.android.email.activity.SplitScreenActivity），进程PID（21404）</li>
+<li>导致ANR的原因：keyDispatchingTimedOut</li>
+<li>系统中活跃进程的CPU占用率，关键的一句：100%TOTAL: 4.8% user + 7.6% kernel + 87% iowait；表示CPU占用满负荷了，其中绝大数是被iowait即I/O操作占用了。我们就可以大致得出是io操作导致的ANR。</li>
+</ol>
+<p>限于篇幅有限，不在分析别的ANR类型。同时需要注意：并不是所有的ANR类型都有章可循，很多偶发的ANR受限于当时发生的环境或者系统Bug；因此对ANR，更应该强调预防而不是分析。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/android/">android</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://liuyan.tech/2019/08/07/Andriod-ANR总结及日志分析/" data-title="Andriod-ANR总结及日志分析 | Ly的博客" data-tsina class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/07/30/adb/" title="adb">
+ <strong>下一篇：</strong><br> 
+ <span>adb
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ANR简述"><span class="toc-number">1.</span> <span class="toc-text">ANR简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ANR产生原因"><span class="toc-number">2.</span> <span class="toc-text">ANR产生原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#典型的ANR场景"><span class="toc-number">3.</span> <span class="toc-text">典型的ANR场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ANR日志分析"><span class="toc-number">4.</span> <span class="toc-text">ANR日志分析</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/网络/" title="网络">网络<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/自我介绍/" title="自我介绍">自我介绍<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/工具类/" title="工具类">工具类<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://wukaikai.tech" target="_blank" title="凯爷">凯爷</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	
+	<div class="social-font">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Ly">Ly</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
