@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="Ly的博客">
 <meta property="og:description" content="Crash简介crash，即崩溃，anr是crash的一种。在程序中可能会出现你未捕获到的异常，这就造成了崩溃。 常见导致Crash的异常 NullPointerException 空指针 ClassCastException 类型转换异常 IndexOutOfBoundsException 下标越界异常 ActivityNotFoundException Activity未找到异常 Illega">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-07T07:53:05.345Z">
+<meta property="og:updated_time" content="2019-08-07T07:59:09.739Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android-Crash日志抓取">
 <meta name="twitter:description" content="Crash简介crash，即崩溃，anr是crash的一种。在程序中可能会出现你未捕获到的异常，这就造成了崩溃。 常见导致Crash的异常 NullPointerException 空指针 ClassCastException 类型转换异常 IndexOutOfBoundsException 下标越界异常 ActivityNotFoundException Activity未找到异常 Illega">
@@ -94,7 +94,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Crash简介"><span class="toc-number">1.</span> <span class="toc-text">Crash简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见导致Crash的异常"><span class="toc-number">2.</span> <span class="toc-text">常见导致Crash的异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抓取Android-APP崩溃和无响应日志"><span class="toc-number">3.</span> <span class="toc-text">抓取Android APP崩溃和无响应日志</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Crash简介"><span class="toc-number">1.</span> <span class="toc-text">Crash简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见导致Crash的异常"><span class="toc-number">2.</span> <span class="toc-text">常见导致Crash的异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抓取Android-APP崩溃和无响应日志"><span class="toc-number">3.</span> <span class="toc-text">抓取Android APP崩溃和无响应日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、-准备工作"><span class="toc-number">3.1.</span> <span class="toc-text">一、 准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、-制作捕获日志的批命令"><span class="toc-number">3.2.</span> <span class="toc-text">二、 制作捕获日志的批命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、-演示"><span class="toc-number">3.3.</span> <span class="toc-text">三、 演示</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -110,40 +110,20 @@
 </ul>
 <h2 id="抓取Android-APP崩溃和无响应日志"><a href="#抓取Android-APP崩溃和无响应日志" class="headerlink" title="抓取Android APP崩溃和无响应日志"></a>抓取Android APP崩溃和无响应日志</h2><p>在Android APP的测试过程中经常遇到crash和anr，开发人员习惯通过eclipse或者eclipse的ddms组件进行捕抓日志，测试人员常通过在dos窗口下adb命令的方式来抓取日志。前者的缺点是启动时非常耗时，后者呢则每次都要写命令也比较麻烦（需要截图时也存在这个问题）。</p>
 <p>针对这样的情况，下面分享一个通过adb程序与bat命令组合的技巧来抓取日志，只要3~5秒即可获取崩溃日志，非常快捷。</p>
-<ol>
-<li>准备工作</li>
-</ol>
-<p>1.1 安装JDK和ADB（V1.0.31版本或以上），网上很多指导方法可以参考。</p>
+<h3 id="一、-准备工作"><a href="#一、-准备工作" class="headerlink" title="一、 准备工作"></a>一、 准备工作</h3><p>1.1 安装JDK和ADB（V1.0.31版本或以上），网上很多指导方法可以参考。</p>
 <p>1.2 在PATH环境变量中添加ADB路径。这样就能在任意地方调用ADB命令，如adb.exe的位置在c:\adb\adb.exe，则在path中加入c:\adb。</p>
-<ol start="2">
-<li>制作捕获日志的批命令</li>
-</ol>
-<p>2.1 制作捕获crash异常的批命令</p>
-<p>将以下命令复制，制作成logcat.bat文件。logcat.bat可以放置任意位置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@ECHO OFF</span><br><span class="line">for /f &quot;tokens=2 delims==&quot; %%a in (&apos;wmic OS Get localdatetime /value&apos;) do set &quot;dt=%%a&quot;</span><br><span class="line">SET timeStamp=%dt:~0,4%-%dt:~4,2%-%dt:~6,2%_%dt:~8,2%-%dt:~10,2%-%dt:~12,2%</span><br><span class="line">SET mutID=_mut</span><br><span class="line">@ECHO ON</span><br><span class="line">adb logcat -v time &gt; .\&quot;%mutID%_%timeStamp%_logcat.log&quot;</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
-<p>原理：</p>
-<p>该工具的原理是bat文件调用adb工具，将手机运行日志拉到本地，并将实时日志也记录到本地。</p>
-<p>用法：</p>
-<p>当手机需要重现crash、或者x分钟内已经发生过crash（x≈15~30），点击此bat，logcat命令会将手机的logcat日志拉下来并实时记录，直到你关闭cmd窗口。然后在拉下来的txt中寻找fatal字眼，附近上下文即为crash日志。</p>
+<h3 id="二、-制作捕获日志的批命令"><a href="#二、-制作捕获日志的批命令" class="headerlink" title="二、 制作捕获日志的批命令"></a>二、 制作捕获日志的批命令</h3><p>2.1 制作捕获crash异常的批命令</p>
+<p>将以下命令复制，制作成logcat.bat文件。logcat.bat可以放置任意位置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@ECHO OFF</span><br><span class="line">for /f &quot;tokens=2 delims==&quot; %%a in (&apos;wmic OS Get localdatetime /value&apos;) do set &quot;dt=%%a&quot;</span><br><span class="line">SET timeStamp=%dt:~0,4%-%dt:~4,2%-%dt:~6,2%_%dt:~8,2%-%dt:~10,2%-%dt:~12,2%</span><br><span class="line">SET mutID=_mut</span><br><span class="line">@ECHO ON</span><br><span class="line">adb logcat -v time &gt; .\&quot;%mutID%_%timeStamp%_logcat.log&quot;</span><br><span class="line">pause</span><br></pre></td></tr></table></figure></p>
+<p>原理：该工具的原理是bat文件调用adb工具，将手机运行日志拉到本地，并将实时日志也记录到本地。</p>
+<p>用法：当手机需要重现crash、或者x分钟内已经发生过crash（x≈15~30），点击此bat，logcat命令会将手机的logcat日志拉下来并实时记录，直到你关闭cmd窗口。然后在拉下来的txt中寻找fatal字眼，附近上下文即为crash日志。</p>
 <p>2.2 制作捕获ANR异常的批命令</p>
-<p>anr：Application Not Responding – 程序无响应。</p>
-<p>将以下命令复制，制作成“ANR捕获.bat”文件。“ANR捕获.bat”可以放置任意位置。</p>
+<p>anr：Application Not Responding – 程序无响应。<br>将以下命令复制，制作成“ANR捕获.bat”文件。“ANR捕获.bat”可以放置任意位置。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@ECHO OFF</span><br><span class="line">for /f &quot;tokens=2 delims==&quot; %%a in (&apos;wmic OS Get localdatetime /value&apos;) do set &quot;dt=%%a&quot;</span><br><span class="line">SET timeStamp=%dt:~0,4%-%dt:~4,2%-%dt:~6,2%_%dt:~8,2%-%dt:~10,2%-%dt:~12,2%</span><br><span class="line">SET mutID=_mut</span><br><span class="line">@ECHO ON</span><br><span class="line">adb pull data/anr/traces.txt traces_%timeStamp%.txt</span><br></pre></td></tr></table></figure>
-<p>原理：</p>
-<p>同上，将手机的traces.txt拉到本地。手机发生anr之后可以用，但一般用不上。</p>
+<p>原理：同上，将手机的traces.txt拉到本地。手机发生anr之后可以用，但一般用不上。</p>
 <p>2.3 优点与限制</p>
-<p>手机无需root</p>
-<p>无需eclipse支持</p>
-<p>方便保存、查找日志</p>
-<p>实时日志不能在cmd窗口回显（限制）</p>
-<ol start="3">
-<li>演示</li>
-</ol>
-<p>以抓取crash异常为例：</p>
-<p>步骤1：将android手机连接电脑，开启开发者模式并允许usb调试；</p>
-<p>步骤2：运行logcat.bat文件，会出现cmd窗口；</p>
-<p>步骤3：①如果手机程序已经发生过crash，5秒后关闭cmd窗口；②如果是想重现crash，则在手机端重现后即可关闭cmd窗口。</p>
-<p>步骤4：在logcat.bat的同级目录下会生成一份log文件，从文件中搜查FATAL关键字，便可找到崩溃代码。</p>
+<p>手机无需root<br>无需eclipse支持<br>方便保存、查找日志<br>实时日志不能在cmd窗口回显（限制）</p>
+<h3 id="三、-演示"><a href="#三、-演示" class="headerlink" title="三、 演示"></a>三、 演示</h3><p>以抓取crash异常为例：</p>
+<p>步骤1：将android手机连接电脑，开启开发者模式并允许usb调试；<br>步骤2：运行logcat.bat文件，会出现cmd窗口；<br>步骤3：①如果手机程序已经发生过crash，5秒后关闭cmd窗口；②如果是想重现crash，则在手机端重现后即可关闭cmd窗口。<br>步骤4：在logcat.bat的同级目录下会生成一份log文件，从文件中搜查FATAL关键字，便可找到崩溃代码。</p>
 <p><strong>说明：<br>bat是dos下的批处理文件。批处理文件是无格式的文本文件，它包含一条或多条命令。它的文件扩展名为 .bat 或 .cmd。在命令提示下键入批处理文件的名称，或者双击该批处理文件，系统就会调用Cmd.exe按照该文件中各个命令出现的顺序来逐个运行它们。直接右键-新建-文本（.txt文件） 右键重名名 改后缀为 .bat直接点击运行，或者 在cmd下运行。</strong></p>
 <p><strong>shell脚本和批处理，通常是Linux和Windows下进行一些简单脚本执行任务的途径。shell脚本是Linux、unix和Mac等下，批处理是Windows下。因此上述的bat文件只可在Windows上执行，如需在mac上执行，需使用shell脚本语言。</strong></p>
   
@@ -176,6 +156,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev">
+ <a href="/2019/08/07/iOS-Crash日志抓取/" title="iOS-Crash日志抓取">
+  <strong>上一篇：</strong><br>
+  <span>
+  iOS-Crash日志抓取</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2019/08/07/Andriod-ANR总结及日志分析/" title="Andriod-ANR总结及日志分析">
@@ -197,7 +185,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Crash简介"><span class="toc-number">1.</span> <span class="toc-text">Crash简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见导致Crash的异常"><span class="toc-number">2.</span> <span class="toc-text">常见导致Crash的异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抓取Android-APP崩溃和无响应日志"><span class="toc-number">3.</span> <span class="toc-text">抓取Android APP崩溃和无响应日志</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Crash简介"><span class="toc-number">1.</span> <span class="toc-text">Crash简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见导致Crash的异常"><span class="toc-number">2.</span> <span class="toc-text">常见导致Crash的异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抓取Android-APP崩溃和无响应日志"><span class="toc-number">3.</span> <span class="toc-text">抓取Android APP崩溃和无响应日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、-准备工作"><span class="toc-number">3.1.</span> <span class="toc-text">一、 准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、-制作捕获日志的批命令"><span class="toc-number">3.2.</span> <span class="toc-text">二、 制作捕获日志的批命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、-演示"><span class="toc-number">3.3.</span> <span class="toc-text">三、 演示</span></a></li></ol></li></ol>
  
   </div>
 
