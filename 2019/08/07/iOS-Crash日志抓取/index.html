@@ -11,14 +11,20 @@
     
 
     
-    <meta property="og:type" content="article">
+    <meta name="description" content="Crash信息分类崩溃信息有的能通过信号捕获到，有的不可以。下图列出了常见的部分崩溃情况： Crash的收集1. 使用Xcode从设备获取崩溃日志： 把你的手机连接到Mac，并选择Xcode-&amp;gt;Windows-&amp;gt;Device and Simulator，Devices选择你的手机，点击View Device Logs，打开的窗口就显示了当前连接设备的Log信息，type为Crash的就">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
 <meta property="og:title" content="iOS-Crash日志抓取">
 <meta property="og:url" content="https://liuyan.tech/2019/08/07/iOS-Crash日志抓取/index.html">
 <meta property="og:site_name" content="Ly的博客">
+<meta property="og:description" content="Crash信息分类崩溃信息有的能通过信号捕获到，有的不可以。下图列出了常见的部分崩溃情况： Crash的收集1. 使用Xcode从设备获取崩溃日志： 把你的手机连接到Mac，并选择Xcode-&amp;gt;Windows-&amp;gt;Device and Simulator，Devices选择你的手机，点击View Device Logs，打开的窗口就显示了当前连接设备的Log信息，type为Crash的就">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-07T09:17:12.010Z">
+<meta property="og:image" content="https://liuyan.tech/images/crash_type.png">
+<meta property="og:updated_time" content="2019-08-07T09:18:45.864Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS-Crash日志抓取">
+<meta name="twitter:description" content="Crash信息分类崩溃信息有的能通过信号捕获到，有的不可以。下图列出了常见的部分崩溃情况： Crash的收集1. 使用Xcode从设备获取崩溃日志： 把你的手机连接到Mac，并选择Xcode-&amp;gt;Windows-&amp;gt;Device and Simulator，Devices选择你的手机，点击View Device Logs，打开的窗口就显示了当前连接设备的Log信息，type为Crash的就">
+<meta name="twitter:image" content="https://liuyan.tech/images/crash_type.png">
 
     
     
@@ -90,15 +96,25 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Crash信息分类"><span class="toc-number">1.</span> <span class="toc-text">Crash信息分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Crash的收集"><span class="toc-number">2.</span> <span class="toc-text">Crash的收集</span></a></li></ol>
 		
 		</div>
 		
-		  
+		<h2 id="Crash信息分类"><a href="#Crash信息分类" class="headerlink" title="Crash信息分类"></a>Crash信息分类</h2><p>崩溃信息有的能通过信号捕获到，有的不可以。下图列出了常见的部分崩溃情况：<br><img src="/images/crash_type.png" alt></p>
+<h2 id="Crash的收集"><a href="#Crash的收集" class="headerlink" title="Crash的收集"></a>Crash的收集</h2><p><strong>1. 使用Xcode从设备获取崩溃日志：</strong></p>
+<p>把你的手机连接到Mac，并选择Xcode-&gt;Windows-&gt;Device and Simulator，Devices选择你的手机，点击View Device Logs，打开的窗口就显示了当前连接设备的Log信息，type为Crash的就是崩溃的Log。</p>
+<p><strong>2. 通过设备直接获取崩溃日志：</strong><br>1）打开设置-&gt;隐私-&gt;分析-&gt;分析数据，在其中找到你想要的应用程序的日志，日志将使用以下格式命名：&lt;应用名称&gt;_&lt;崩溃时间&gt;_&lt;设备名&gt;<br>2）选择所需的日志，复制文本或点击右上角的分享按钮分享出去，并且把分享得到的.ips.synced或者复制文本而来的.txt文件的后缀名改为.crash，因为Xcode不接受没有.crash扩展名的崩溃日志</p>
+<p><strong>3. 使用第三方SDK登入后台查看崩溃信息（Bugly等）</strong></p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/iOS/">iOS</a>
+  </div>
 
 </div>
 
@@ -140,7 +156,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Crash信息分类"><span class="toc-number">1.</span> <span class="toc-text">Crash信息分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Crash的收集"><span class="toc-number">2.</span> <span class="toc-text">Crash的收集</span></a></li></ol>
  
   </div>
 
@@ -164,6 +180,10 @@
 		
 			
 				<li><a href="/tags/网络/" title="网络">网络<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>1</sup></a></li>
 			
 		
 			
