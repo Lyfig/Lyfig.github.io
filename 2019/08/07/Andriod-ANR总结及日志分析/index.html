@@ -11,18 +11,18 @@
     
 
     
-    <meta name="description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在==5s==内没有">
+    <meta name="description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在5s内没有处理完成">
 <meta name="keywords" content="android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Andriod-ANR总结及日志分析">
 <meta property="og:url" content="https://liuyan.tech/2019/08/07/Andriod-ANR总结及日志分析/index.html">
 <meta property="og:site_name" content="Ly的博客">
-<meta property="og:description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在==5s==内没有">
+<meta property="og:description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在5s内没有处理完成">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-07T07:48:35.212Z">
+<meta property="og:updated_time" content="2019-08-07T07:50:43.111Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Andriod-ANR总结及日志分析">
-<meta name="twitter:description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在==5s==内没有">
+<meta name="twitter:description" content="ANR简述ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。 ANR产生原因出现ANR一般有以下几种原因：  KeyDispatchTimeout(常见)input事件在5s内没有处理完成">
 
     
     
@@ -101,10 +101,10 @@
 		<h2 id="ANR简述"><a href="#ANR简述" class="headerlink" title="ANR简述"></a>ANR简述</h2><p>ANR（Application Not Responding）应用程序无响应。如果你应用程序在UI线程被阻塞太长时间，就会出现ANR，通常出现ANR，系统会弹出一个应用无响应对话框，同时会产生一个日志文件traces.txt，位于/data/anr/文件夹下面。</p>
 <h2 id="ANR产生原因"><a href="#ANR产生原因" class="headerlink" title="ANR产生原因"></a>ANR产生原因</h2><p>出现ANR一般有以下几种原因：</p>
 <ol>
-<li><strong>KeyDispatchTimeout</strong>(常见)<br>input事件在==5s==内没有处理完成<br>logcat日志关键字：==Input event dispatching timed out==</li>
-<li><strong>BroadcastTimeout</strong><br>前台Broadcast：onReceiver在==10S==内没有处理完成发生ANR。<br>后台Broadcast：onReceiver在==60s==内没有处理完成发生ANR。<br>logcat日志关键字：==Timeout of broadcast BroadcastRecord==</li>
-<li><strong>ServiceTimeout</strong><br>前台Service：onCreate，onStart，onBind等生命周期在==20s==内没有处理完成发生ANR。<br>后台Service：onCreate，onStart，onBind等生命周期在==200s==内没有处理完成发生ANR<br>logcat日志关键字：==Timeout executing service==</li>
-<li><strong>ContentProviderTimeout</strong><br>ContentProvider 在==10S==内没有处理完成发生ANR。<br>logcat日志关键字：==timeout publishing content providers==</li>
+<li><strong>KeyDispatchTimeout</strong>(常见)<br>input事件在5s内没有处理完成<br>logcat日志关键字：Input event dispatching timed out</li>
+<li><strong>BroadcastTimeout</strong><br>前台Broadcast：onReceiver在10S内没有处理完成发生ANR。<br>后台Broadcast：onReceiver在60s内没有处理完成发生ANR。<br>logcat日志关键字：Timeout of broadcast BroadcastRecord</li>
+<li><strong>ServiceTimeout</strong><br>前台Service：onCreate，onStart，onBind等生命周期在20s内没有处理完成发生ANR。<br>后台Service：onCreate，onStart，onBind等生命周期在200s内没有处理完成发生ANR<br>logcat日志关键字：Timeout executing service</li>
+<li><strong>ContentProviderTimeout</strong><br>ContentProvider 在10S内没有处理完成发生ANR。<br>logcat日志关键字：timeout publishing content providers</li>
 </ol>
 <h2 id="典型的ANR场景"><a href="#典型的ANR场景" class="headerlink" title="典型的ANR场景"></a>典型的ANR场景</h2><p>1)主线程频繁进行IO操作，比如读写文件或者数据库；<br>2)硬件操作如进行调用照相机或者录音等操作；<br>3)多线程操作的死锁，导致主线程等待超时；<br>4)主线程操作调用join()方法、sleep()方法或者wait()方法；<br>5)耗时动画/耗资源行为导致CPU负载过重<br>6)system server中发生WatchDog ANR；<br>7)service binder的数量达到上限</p>
 <h2 id="ANR日志分析"><a href="#ANR日志分析" class="headerlink" title="ANR日志分析"></a>ANR日志分析</h2><p>ANR的Log信息保存在：/data/anr/traces.txt，每一次新的ANR发生，会把之前的ANR信息覆盖掉</p>
@@ -149,6 +149,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev">
+ <a href="/2019/08/07/Android-Crash日志抓取/" title="Android-Crash日志抓取">
+  <strong>上一篇：</strong><br>
+  <span>
+  Android-Crash日志抓取</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2019/07/30/adb/" title="adb">
@@ -189,7 +197,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
