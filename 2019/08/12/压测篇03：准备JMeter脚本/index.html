@@ -4,27 +4,32 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
   
-    <title>博主个人信息 | Ly的博客</title>
+    <title>压测篇03：准备JMeter脚本 | Ly的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Ly">
     
 
     
-    <meta name="description" content="女神自述我叫刘小pang，胖嘟嘟的胖。自幼爱吃，所以有一个大大的小胖脸。 照片 表白哎呀，我好喜欢吴kk呀~~~ 超级超级喜欢 男神网站👉这😍😍里👈">
-<meta name="keywords" content="自我介绍">
+    <meta name="description" content="1、添加线程组在Test Plan上点击鼠标右键–&amp;gt;Add–&amp;gt;Threads(Users)→Thread Group，添加测试场景设置组件：  Name：线程组名称 1）线程数：即用户数，一个虚拟用户占用一个线程，虚拟用户的并发数 2）准备时长：设置的虚拟用户数需要多长时间全部启动 3）循环次数：每个线程发送请求的次数，总请求数=线程数*循环次数。如果勾选了“永远”，那么所有线程会一直">
+<meta name="keywords" content="工具类">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博主个人信息">
-<meta property="og:url" content="https://liuyan.tech/2019/04/30/博主个人信息/index.html">
+<meta property="og:title" content="压测篇03：准备JMeter脚本">
+<meta property="og:url" content="https://liuyan.tech/2019/08/12/压测篇03：准备JMeter脚本/index.html">
 <meta property="og:site_name" content="Ly的博客">
-<meta property="og:description" content="女神自述我叫刘小pang，胖嘟嘟的胖。自幼爱吃，所以有一个大大的小胖脸。 照片 表白哎呀，我好喜欢吴kk呀~~~ 超级超级喜欢 男神网站👉这😍😍里👈">
+<meta property="og:description" content="1、添加线程组在Test Plan上点击鼠标右键–&amp;gt;Add–&amp;gt;Threads(Users)→Thread Group，添加测试场景设置组件：  Name：线程组名称 1）线程数：即用户数，一个虚拟用户占用一个线程，虚拟用户的并发数 2）准备时长：设置的虚拟用户数需要多长时间全部启动 3）循环次数：每个线程发送请求的次数，总请求数=线程数*循环次数。如果勾选了“永远”，那么所有线程会一直">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://liuyan.tech/images/2.jpeg">
-<meta property="og:updated_time" content="2019-06-26T04:23:47.270Z">
+<meta property="og:image" content="https://liuyan.tech/images/thread_group.png">
+<meta property="og:image" content="https://liuyan.tech/images/http_request.png">
+<meta property="og:image" content="https://liuyan.tech/images/Assertion.png">
+<meta property="og:image" content="https://liuyan.tech/images/Listener.png">
+<meta property="og:image" content="https://liuyan.tech/images/config_element.png">
+<meta property="og:image" content="https://liuyan.tech/images/processor.png">
+<meta property="og:updated_time" content="2019-08-12T07:12:14.952Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="博主个人信息">
-<meta name="twitter:description" content="女神自述我叫刘小pang，胖嘟嘟的胖。自幼爱吃，所以有一个大大的小胖脸。 照片 表白哎呀，我好喜欢吴kk呀~~~ 超级超级喜欢 男神网站👉这😍😍里👈">
-<meta name="twitter:image" content="https://liuyan.tech/images/2.jpeg">
+<meta name="twitter:title" content="压测篇03：准备JMeter脚本">
+<meta name="twitter:description" content="1、添加线程组在Test Plan上点击鼠标右键–&amp;gt;Add–&amp;gt;Threads(Users)→Thread Group，添加测试场景设置组件：  Name：线程组名称 1）线程数：即用户数，一个虚拟用户占用一个线程，虚拟用户的并发数 2）准备时长：设置的虚拟用户数需要多长时间全部启动 3）循环次数：每个线程发送请求的次数，总请求数=线程数*循环次数。如果勾选了“永远”，那么所有线程会一直">
+<meta name="twitter:image" content="https://liuyan.tech/images/thread_group.png">
 
     
     
@@ -78,7 +83,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/04/30/博主个人信息/" title="博主个人信息" itemprop="url">博主个人信息</a>
+      <a href="/2019/08/12/压测篇03：准备JMeter脚本/" title="压测篇03：准备JMeter脚本" itemprop="url">压测篇03：准备JMeter脚本</a>
   </h1>
   <!--
   <p class="article-author">By
@@ -87,7 +92,7 @@
     
     -->
   <p class="article-time">
-    <time datetime="2019-04-30T09:24:26.000Z" itemprop="datePublished"> 发表于 2019-04-30</time>
+    <time datetime="2019-08-12T07:11:45.000Z" itemprop="datePublished"> 发表于 2019-08-12</time>
     
   </p>
 </header>
@@ -96,14 +101,26 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#女神"><span class="toc-number">1.</span> <span class="toc-text">女神</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#自述"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">自述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#照片"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">照片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表白"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">表白</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#男神网站"><span class="toc-number">1.0.0.4.</span> <span class="toc-text">男神网站</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、添加线程组"><span class="toc-number">1.</span> <span class="toc-text">1、添加线程组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、添加HTTP-Request"><span class="toc-number">2.</span> <span class="toc-text">2、添加HTTP Request</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、添加断言"><span class="toc-number">3.</span> <span class="toc-text">3、添加断言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、添加监听器"><span class="toc-number">4.</span> <span class="toc-text">4、添加监听器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、参数化"><span class="toc-number">5.</span> <span class="toc-text">5、参数化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6、关联"><span class="toc-number">6.</span> <span class="toc-text">6、关联</span></a></li></ol>
 		
 		</div>
 		
-		<h1 id="女神"><a href="#女神" class="headerlink" title="女神"></a>女神</h1><h4 id="自述"><a href="#自述" class="headerlink" title="自述"></a>自述</h4><p>我叫刘小pang，胖嘟嘟的胖。自幼爱吃，所以有一个大大的小胖脸。</p>
-<h4 id="照片"><a href="#照片" class="headerlink" title="照片"></a>照片</h4><p><img src="/images/2.jpeg" alt="可爱的小胖子"></p>
-<h4 id="表白"><a href="#表白" class="headerlink" title="表白"></a>表白</h4><p>哎呀，我好喜欢吴kk呀~~~ 超级超级喜欢</p>
-<h4 id="男神网站"><a href="#男神网站" class="headerlink" title="男神网站"></a>男神网站</h4><p><a href="https://wukaikai.tech/" target="_blank" rel="noopener">👉这😍😍里👈</a></p>
+		<h2 id="1、添加线程组"><a href="#1、添加线程组" class="headerlink" title="1、添加线程组"></a>1、添加线程组</h2><p>在Test Plan上点击鼠标右键–&gt;Add–&gt;Threads(Users)→Thread Group，添加测试场景设置组件：<br><img src="/images/thread_group.png" alt></p>
+<ul>
+<li>Name：线程组名称</li>
+<li>1）线程数：即用户数，一个虚拟用户占用一个线程，虚拟用户的并发数</li>
+<li>2）准备时长：设置的虚拟用户数需要多长时间全部启动</li>
+<li>3）循环次数：每个线程发送请求的次数，总请求数=线程数*循环次数。如果勾选了“永远”，那么所有线程会一直发送请求，直到选择停止运行脚本</li>
+</ul>
+<h2 id="2、添加HTTP-Request"><a href="#2、添加HTTP-Request" class="headerlink" title="2、添加HTTP Request"></a>2、添加HTTP Request</h2><p>在Thread Group右键–&gt;Add–&gt;Sampler–&gt;HTTP Request：<br>输入对应的协议、IP或域名和path<br><img src="/images/http_request.png" alt></p>
+<h2 id="3、添加断言"><a href="#3、添加断言" class="headerlink" title="3、添加断言"></a>3、添加断言</h2><p>在HTTP Request上右键–&gt;Add–&gt;Assertions，选择需要的断言<br><img src="/images/Assertion.png" alt></p>
+<h2 id="4、添加监听器"><a href="#4、添加监听器" class="headerlink" title="4、添加监听器"></a>4、添加监听器</h2><p>在Thread Group上右键–&gt;Add–&gt;Listener–&gt;View Results Tree<br><img src="/images/Listener.png" alt></p>
+<h2 id="5、参数化"><a href="#5、参数化" class="headerlink" title="5、参数化"></a>5、参数化</h2><p>新建csv data set config：<br>在HTTP Request上右键–&gt;Add–&gt;Config Element–&gt;CSV Data Set Config<br><img src="/images/config_element.png" alt></p>
+<ul>
+<li>filename：选择本地准备好的csv文件</li>
+<li>Variable Names：需要参数化的参数名</li>
+</ul>
+<h2 id="6、关联"><a href="#6、关联" class="headerlink" title="6、关联"></a>6、关联</h2><p>JMeter中关联可以在需要获取数据的请求上，右键–&gt;Add–&gt;Post Processors–&gt;JSON Extractor，选择需要的关联方式，如下图有很多种方法可以提取动态变化数据：<br><img src="/images/processor.png" alt></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -112,7 +129,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/自我介绍/">自我介绍</a>
+  <span></span> <a href="/tags/工具类/">工具类</a>
   </div>
 
 </div>
@@ -121,7 +138,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="https://liuyan.tech/2019/04/30/博主个人信息/" data-title="博主个人信息 | Ly的博客" data-tsina class="share clearfix">
+	  <div data-url="https://liuyan.tech/2019/08/12/压测篇03：准备JMeter脚本/" data-title="压测篇03：准备JMeter脚本 | Ly的博客" data-tsina class="share clearfix">
 	  </div>
 	
 	</div>
@@ -134,14 +151,14 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
- <a href="/2019/06/25/Charles/" title="charles使用说明（基于mac）">
-  <strong>上一篇：</strong><br>
-  <span>
-  charles使用说明（基于mac）</span>
+
+<div class="next">
+<a href="/2019/08/09/压测篇02：JMeter内部原理/" title="压测篇02：JMeter内部原理">
+ <strong>下一篇：</strong><br> 
+ <span>压测篇02：JMeter内部原理
+</span>
 </a>
 </div>
-
 
 </nav>
 
@@ -155,7 +172,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#女神"><span class="toc-number">1.</span> <span class="toc-text">女神</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#自述"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">自述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#照片"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">照片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表白"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">表白</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#男神网站"><span class="toc-number">1.0.0.4.</span> <span class="toc-text">男神网站</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、添加线程组"><span class="toc-number">1.</span> <span class="toc-text">1、添加线程组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、添加HTTP-Request"><span class="toc-number">2.</span> <span class="toc-text">2、添加HTTP Request</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、添加断言"><span class="toc-number">3.</span> <span class="toc-text">3、添加断言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、添加监听器"><span class="toc-number">4.</span> <span class="toc-text">4、添加监听器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、参数化"><span class="toc-number">5.</span> <span class="toc-text">5、参数化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6、关联"><span class="toc-number">6.</span> <span class="toc-text">6、关联</span></a></li></ol>
  
   </div>
 
