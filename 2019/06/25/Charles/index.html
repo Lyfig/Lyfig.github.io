@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/006tNc79ly1g4dgii26wzj30r00eywp1.jpg">
 <meta property="og:image" content="https://liuyan.tech/images/breakpoint.jpg">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/006tNc79ly1g4dgq8vf62j30vw0n4jv8.jpg">
-<meta property="og:updated_time" content="2019-06-26T04:23:38.016Z">
+<meta property="og:updated_time" content="2019-08-14T06:59:29.003Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="charles使用说明（基于mac）">
 <meta name="twitter:description" content="Charles简介Charles 需要java的运行环境支持，支持Windows、Mac；Fiddler不支持Mac。故Charles是在Mac下常用的网络封包截取工具。 Charles原理：通过将自己设置成系统的网络访问代理服务器，使得所有的网络访问请求都通过它来完成，从而实现了网络封包的截取和分析。 除了在做移动开发中调试端口外，Charles 也可以用于分析第三方应用的通讯协议。配合 Cha">
@@ -166,7 +166,15 @@
 <p> Breakpoints功能</p>
 <p>上面提供的 Rewrite 功能最适合做批量和长期的替换，但是很多时候，我们只是想临时修改一次网络请求结果，这个时候，使用 Rewrite 功能虽然也可以达到目的，但是过于麻烦，对于临时性的修改，我们最好使用 Breakpoints 功能。</p>
 <p>Breakpoints 功能类似我们在 Xcode 中设置的断点一样，当指定的网络请求发生时，Charles 会截获该请求，这个时候，我们可以在 Charles 中临时修改网络请求的返回内容。</p>
-<p>下图是我们临时修改获取用户信息的 API，将用户的昵称进行了更改，修改完成后点击 “Execute” 则可以让网络请求继续进行:<br><img src="/images/breakpoint.jpg" alt="断点"></p>
+<ul>
+<li>先通过charles抓到想要修改数据的接口</li>
+<li>点击右键勾选Breakpoints</li>
+<li>再点击Charles工具中Proxy-Breakpoints</li>
+<li>双击弹窗中想要打断点的接口（Location），弹出Edit Breakpoints</li>
+<li>将Query中的内容删除，输入*，如果修改Request就勾选Request，如果修改Response就勾选Response</li>
+<li>再重新访问该接口，Charles自动跳转到Breakpoints界面</li>
+<li>下图是我们临时修改获取用户信息的 API，将用户的昵称进行了更改，修改完成后点击 “Execute” 则可以让网络请求继续进行:<br><img src="/images/breakpoint.jpg" alt="断点"></li>
+</ul>
 <p><strong>需要注意的是，使用 Breakpoints 功能将网络请求截获并修改过程中，整个网络请求的计时并不会暂停，所以长时间的暂停可能导致客户端的请求超时。</strong></p>
 <h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><p>Charles 的反向代理功能允许我们将本地的端口映射到远程的另一个端口上。例如，在下图中，我将本机的 61234 端口映射到了远程（<a href="http://www.yuantiku.com）的80端口上了。这样，当我访问本地的" target="_blank" rel="noopener">www.yuantiku.com）的80端口上了。这样，当我访问本地的</a> 61234 端口时，实际返回的内容会由 <a href="http://www.yuantiku.com" target="_blank" rel="noopener">www.yuantiku.com</a> 的 80 端口提供:<br><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4dgq8vf62j30vw0n4jv8.jpg" alt="反向代理"></p>
 <h3 id="设置外部代理，解决与翻墙软件的冲突"><a href="#设置外部代理，解决与翻墙软件的冲突" class="headerlink" title="设置外部代理，解决与翻墙软件的冲突"></a>设置外部代理，解决与翻墙软件的冲突</h3><p>Charles 的原理是把自己设置成系统的代理服务器，但是在中国，由于工作需要，我们常常需要使用 Google 搜索，所以大部分程序员都有自己的翻墙软件，而这些软件的基本原理，也是把自己设置成系统的代理服务器，来做到透明的翻墙。</p>
